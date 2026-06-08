@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -28,7 +30,6 @@ export default function AICoachPage() {
     const userMsg: Message = { id: `u-${Date.now()}`, role: 'user', content: data.content };
     setMessages((prev) => [...prev, userMsg]);
     reset();
-    // call mock AI provider
     const provider = getAIProvider();
     const response = await provider.sendMessage(data.content);
     const aiMsg: Message = { id: response.id, role: 'assistant', content: response.content };
@@ -56,11 +57,7 @@ export default function AICoachPage() {
             ))}
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2">
-            <Input
-              {...register('content')}
-              placeholder="Ask your AI coach..."
-              disabled={isSubmitting}
-            />
+            <Input {...register('content')} placeholder="Ask your AI coach..." disabled={isSubmitting} />
             <Button type="submit" disabled={isSubmitting}>Send</Button>
           </form>
           {errors.content && <p className="text-red-400 mt-1">{errors.content.message}</p>}
